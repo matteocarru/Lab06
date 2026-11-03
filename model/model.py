@@ -37,6 +37,28 @@ class DepositoStrumenti:
         """
         # TODO
 
+        cnx = get_connection()
+
+        if cnx is not None:
+            print("Connection established")
+
+            query = "SELECT codice, tipo, marca, anno_acquisto, valore, disponibile FROM strumento ORDER BY codice"
+            cursor = cnx.cursor()
+            cursor.execute(query)
+
+            result = []
+
+            for row in cursor:
+                strumento = Strumento(*row)
+                result.append(strumento)
+
+            cursor.close()
+            cnx.close()
+            return result
+
+        return None
+
+
     def cerca_strumenti_per_tipo(self, tipo) -> list[Strumento] | None:
         """
             Funzione che recupera una lista con tutti gli strumenti presenti nel database di un certo tipo
@@ -44,3 +66,24 @@ class DepositoStrumenti:
             :return: una lista con tutti gli strumenti del tipo indicato oppure None
         """
         # TODO
+
+        cnx = get_connection()
+
+        if cnx is not None:
+            print("Connection established")
+
+            query = "SELECT codice, tipo, marca, anno_acquisto, valore, disponibile FROM strumento WHERE tipo LIKE %s ORDER BY codice"
+            cursor = cnx.cursor()
+            cursor.execute(query, (f"%{tipo}%",))
+
+            result = []
+
+            for row in cursor:
+                strumento = Strumento(*row)
+                result.append(strumento)
+
+            cursor.close()
+            cnx.close()
+            return result
+
+        return None

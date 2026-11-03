@@ -37,6 +37,23 @@ class View:
     def update(self):
         self.page.update()
 
+    def popola_lista_strumenti(self, strumenti):
+
+        self.lista_strumenti.controls.clear()
+
+        for s in strumenti:
+            self.lista_strumenti.controls.append(ft.Text(str(s)))
+        self.update()
+
+    def popola_lista_ricerca(self, strumenti):
+
+        self.lista_strumenti_ricerca.controls.clear()
+
+        for s in strumenti:
+            self.lista_strumenti_ricerca.controls.append(ft.Text(str(s)))
+        self.update()
+
+
     def load_interface(self):
         """ Crea e aggiunge Elementi di UI alla pagina e la aggiorna. """
         self.txt_titolo = ft.Text(value=self.controller.get_nome(), size=38, weight=ft.FontWeight.BOLD)
@@ -65,6 +82,11 @@ class View:
         # Altri Pulsanti da implementare (es. "Mostra" e "Cerca")
         # TODO
 
+        pulsante_mostra=ft.Button("Mostra", on_click=self.controller.mostra)
+        pulsante_cerca=ft.Button("Cerca", on_click=self.controller.cerca)
+
+
+
         # --- LAYOUT ---
         self.page.add(
             self.toggle_cambia_tema,
@@ -83,9 +105,24 @@ class View:
 
             # Sezione 3
             # TODO
+            #ft.Text("Strumenti", size=20),
+           # pulsante_mostra,
+            #self.lista_strumenti,
+            #ft.Divider(),
+
+            ft.Row(controls=[ft.Text("Strumenti", size=20), pulsante_mostra],
+                   alignment=ft.MainAxisAlignment.START),
+
+            self.lista_strumenti,
+            ft.Divider(),
+
 
             # Sezione 4
             # TODO
+            ft.Text("Cerca strumento per tipo", size=20),
+            ft.Row(controls=[self.input_tipo_strumento, pulsante_cerca],
+                   alignment=ft.MainAxisAlignment.START),
+            self.lista_strumenti_ricerca,
         )
 
     def cambia_tema(self, e):

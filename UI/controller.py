@@ -29,3 +29,35 @@ class Controller:
 
     # Altre Funzioni Event Handler
     # TODO
+
+    def mostra (self, e):
+        strumenti = self._model.get_strumenti()
+        if strumenti is None:
+            self._view.show_alert("Errore di connessione al database")
+            return
+
+        if len(strumenti) == 0:
+            self._view.show_alert("Nessuno strumento presente nel deposito.")
+            return
+        self._view.popola_lista_strumenti(strumenti)
+
+    def cerca(self, e):
+
+        tipo = self._view.input_tipo_strumento.value
+
+        if tipo is None or tipo.strip() == "":
+            self._view.show_alert("Inserisci un tipo di strumento da cercare.")
+            return
+
+        strumenti = self._model.cerca_strumenti_per_tipo(tipo.strip())
+
+        if strumenti is None:
+            self._view.show_alert("Errore di connessione al database.")
+            return
+
+        if len(strumenti) == 0:
+            self._view.show_alert(f"Nessuno strumento trovato di tipo '{tipo}'.")
+            return
+        self._view.popola_lista_ricerca(strumenti)
+
+
